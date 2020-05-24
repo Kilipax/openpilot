@@ -164,6 +164,7 @@ FW_VERSIONS = {
   CAR.ACCORD: {
     (Ecu.programmedFuelInjection, 0x18da10f1, None): [
       b'37805-6A0-A640\x00\x00',
+      b'37805-6B2-A210\x00\x00',
       b'37805-6B2-A550\x00\x00',
       b'37805-6B2-A560\x00\x00',
       b'37805-6B2-A650\x00\x00',
@@ -187,6 +188,7 @@ FW_VERSIONS = {
       b'46114-TVA-A120\x00\x00',
     ],
     (Ecu.vsa, 0x18da28f1, None): [
+      b'57114-TVA-B050\x00\x00',
       b'57114-TVA-C040\x00\x00',
       b'57114-TVA-C050\x00\x00',
       b'57114-TVA-C060\x00\x00',
@@ -211,6 +213,7 @@ FW_VERSIONS = {
       b'78109-TVC-A110\x00\x00',
       b'78109-TVC-A210\x00\x00',
       b'78109-TVC-C110\x00\x00',
+      b'78109-TVC-A330\x00\x00',
       b'78109-TVC-M510\x00\x00',
     ],
     (Ecu.hud, 0x18da61f1, None): [
@@ -227,12 +230,14 @@ FW_VERSIONS = {
     ],
     (Ecu.gateway, 0x18daeff1, None): [
       b'38897-TVA-A010\x00\x00',
+      b'38897-TVA-A230\x00\x00',
     ],
   },
   CAR.ACCORD_15: {
     (Ecu.programmedFuelInjection, 0x18da10f1, None): [
       b'37805-6A0-9620\x00\x00',
       b'37805-6A0-A540\x00\x00',
+      b'37805-6A0-A070\x00\x00',
       b'37805-6A0-A640\x00\x00',
       b'37805-6A0-A650\x00\x00',
       b'37805-6A0-A740\x00\x00',
@@ -270,6 +275,7 @@ FW_VERSIONS = {
       b'78109-TVA-A220\x00\x00',
       b'78109-TVA-A310\x00\x00',
       b'78109-TVA-C010\x00\x00',
+      b'78109-TVA-A420\x00\x00',
       b'78109-TVE-H610\x00\x00',
       b'78109-TWA-A210\x00\x00',
       b'78109-TBX-H310\x00\x00',
@@ -1111,5 +1117,8 @@ SPEED_FACTOR = {
   CAR.RIDGELINE: 1.,
   CAR.INSIGHT: 1.,
 }
+
+# TODO: get this from the car's dbc. there is a possiblity for a future msg conflict with this method
+GEARBOX_MSG = [0x188, 0x191, 0x1a3]
 
 HONDA_BOSCH = set([CAR.ACCORD, CAR.ACCORD_15, CAR.ACCORDH, CAR.CIVIC_BOSCH, CAR.CIVIC_BOSCH_DIESEL, CAR.CRV_5G, CAR.CRV_HYBRID, CAR.INSIGHT, CAR.ACURA_RDX_3G])

@@ -577,6 +577,10 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
     ET.NO_ENTRY: NoEntryAlert("Gear not D"),
   },
 
+  EventName.clutchPressed: {
+    ET.NO_ENTRY: NoEntryAlert("Clutch Pedal Pressed"),
+  },
+
   EventName.calibrationInvalid: {
     ET.PERMANENT: NormalPermanentAlert("Calibration Invalid", "Remount Device and Recalibrate"),
     ET.SOFT_DISABLE: SoftDisableAlert("Calibration Invalid: Remount Device & Recalibrate"),

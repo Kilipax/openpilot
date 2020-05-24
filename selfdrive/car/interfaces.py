@@ -98,7 +98,7 @@ class CarInterfaceBase():
       events.add(EventName.doorOpen)
     if cs_out.seatbeltUnlatched:
       events.add(EventName.seatbeltNotLatched)
-    if cs_out.gearShifter != GearShifter.drive and cs_out.gearShifter not in extra_gears:
+    if cs_out.gearShifter != GearShifter.drive and cs_out.gearShifter not in extra_gears and not cs_out.clutchPressed:
       events.add(EventName.wrongGear)
     if cs_out.gearShifter == GearShifter.reverse:
       events.add(EventName.reverseGear)
@@ -108,6 +108,8 @@ class CarInterfaceBase():
       events.add(EventName.espDisabled)
     if cs_out.gasPressed:
       events.add(EventName.gasPressed)
+    if cs_out.clutchPressed:
+      events.add(EventName.clutchPressed)
     if cs_out.stockFcw:
       events.add(EventName.stockFcw)
     if cs_out.stockAeb:
