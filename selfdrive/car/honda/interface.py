@@ -126,7 +126,7 @@ class CarInterface(CarInterfaceBase):
     ret = CarInterfaceBase.get_std_params(candidate, fingerprint)
     ret.carName = "honda"
 
-    pt_bus = 1 if has_relay and candidate in HONDA_BOSCH else 0
+    pt_bus = 1 if candidate in HONDA_BOSCH else 0
 
     if candidate in HONDA_BOSCH:
       ret.safetyModel = car.CarParams.SafetyModel.hondaBoschHarness
