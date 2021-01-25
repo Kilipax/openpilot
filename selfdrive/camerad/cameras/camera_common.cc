@@ -121,14 +121,14 @@ CameraBuf::~CameraBuf() {
 }
 
 bool CameraBuf::acquire() {
-  std::unique_lock<std::mutex> lk(frame_queue_mutex);
+  {
+    std::unique_lock<std::mutex> lk(frame_queue_mutex);
+    bool got_frame = frame_queue_cv.wait_for(lk, std::chrono::milliseconds(1), [this]{ return !frame_queue.empty(); });
+    if (!got_frame) return false;
 
-  bool got_frame = frame_queue_cv.wait_for(lk, std::chrono::milliseconds(1), [this]{ return !frame_queue.empty(); });
-  if (!got_frame) return false;
-
-  cur_buf_idx = frame_queue.front();
-  frame_queue.pop();
-  lk.unlock();
+    cur_buf_idx = frame_queue.front();
+    frame_queue.pop();
+  }
 
   const FrameMetadata &frame_data = camera_bufs_metadata[cur_buf_idx];
   if (frame_data.frame_id == -1) {
@@ -205,6 +205,7 @@ void CameraBuf::queue(size_t buf_idx){
 void fill_frame_data(cereal::FrameData::Builder &framed, const FrameMetadata &frame_data, uint32_t cnt) {
   framed.setFrameId(frame_data.frame_id);
   framed.setTimestampEof(frame_data.timestamp_eof);
+  framed.setTimestampSof(frame_data.timestamp_sof);
   framed.setFrameLength(frame_data.frame_length);
   framed.setIntegLines(frame_data.integ_lines);
   framed.setGlobalGain(frame_data.global_gain);
@@ -215,25 +216,25 @@ void fill_frame_data(cereal::FrameData::Builder &framed, const FrameMetadata &fr
   framed.setGainFrac(frame_data.gain_frac);
 }
 
-void fill_frame_image(cereal::FrameData::Builder &framed, uint8_t *dat, int w, int h, int stride) {
-  if (dat != nullptr) {
-    int scale = env_scale;
-    int x_min = env_xmin; int y_min = env_ymin; int x_max = w-1; int y_max = h-1;
-    if (env_xmax != -1) x_max = env_xmax;
-    if (env_ymax != -1) y_max = env_ymax;
-    int new_width = (x_max - x_min + 1) / scale;
-    int new_height = (y_max - y_min + 1) / scale;
-    uint8_t *resized_dat = new uint8_t[new_width*new_height*3];
+void fill_frame_image(cereal::FrameData::Builder &framed, const CameraBuf *b) {
+  assert(b->cur_rgb_buf);
+  const uint8_t *dat = (const uint8_t *)b->cur_rgb_buf->addr;
+  int scale = env_scale;
+  int x_min = env_xmin; int y_min = env_ymin; int x_max = b->rgb_width-1; int y_max = b->rgb_height-1;
+  if (env_xmax != -1) x_max = env_xmax;
+  if (env_ymax != -1) y_max = env_ymax;
+  int new_width = (x_max - x_min + 1) / scale;
+  int new_height = (y_max - y_min + 1) / scale;
+  uint8_t *resized_dat = new uint8_t[new_width*new_height*3];
 
-    int goff = x_min*3 + y_min*stride;
-    for (int r=0;r<new_height;r++) {
-      for (int c=0;c<new_width;c++) {
-        memcpy(&resized_dat[(r*new_width+c)*3], &dat[goff+r*stride*scale+c*3*scale], 3*sizeof(uint8_t));
-      }
+  int goff = x_min*3 + y_min*b->rgb_stride;
+  for (int r=0;r<new_height;r++) {
+    for (int c=0;c<new_width;c++) {
+      memcpy(&resized_dat[(r*new_width+c)*3], &dat[goff+r*b->rgb_stride*scale+c*3*scale], 3*sizeof(uint8_t));
     }
-    framed.setImage(kj::arrayPtr((const uint8_t*)resized_dat, new_width*new_height*3));
-    delete[] resized_dat;
   }
+  framed.setImage(kj::arrayPtr((const uint8_t*)resized_dat, (size_t)new_width*new_height*3));
+  delete[] resized_dat;
 }
 
 static void create_thumbnail(MultiCameraState *s, const CameraBuf *b) {
@@ -339,7 +340,7 @@ void set_exposure_target(CameraState *c, const uint8_t *pix_ptr, int x_start, in
 extern ExitHandler do_exit;
 
 void *processing_thread(MultiCameraState *cameras, const char *tname,
-                          CameraState *cs, process_thread_cb callback) {
+                        CameraState *cs, process_thread_cb callback) {
   set_thread_name(tname);
 
   for (int cnt = 0; !do_exit; cnt++) {
@@ -411,7 +412,7 @@ void common_camera_process_front(SubMaster *sm, PubMaster *pm, CameraState *c, i
   framed.setFrameType(cereal::FrameData::FrameType::FRONT);
   fill_frame_data(framed, b->cur_frame_data, cnt);
   if (env_send_front) {
-    fill_frame_image(framed, (uint8_t*)b->cur_rgb_buf->addr, b->rgb_width, b->rgb_height, b->rgb_stride);
+    fill_frame_image(framed, b);
   }
   pm->send("frontFrame", msg);
 }
