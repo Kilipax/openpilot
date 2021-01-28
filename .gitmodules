@@ -2,8 +2,8 @@
 	path = panda
 	url = ../../commaai/panda.git
 [submodule "opendbc"]
-	path = opendbc
-	url = ../../Kilipax/opendbc.git
+	path = openpilot
+	url = ../../Kilipax/openpilot.git
 	branch = fit-manual
 [submodule "laika_repo"]
 	path = laika_repo
