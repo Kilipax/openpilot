@@ -3,7 +3,7 @@
 	url = ../../commaai/panda.git
 [submodule "opendbc"]
 	path = opendbc
-	url = ../../Kilipax/opendbc
+	url = ../../Kilipax/opendbc.git
 	branch = fit-manual
 [submodule "laika_repo"]
 	path = laika_repo
