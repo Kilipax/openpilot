@@ -734,26 +734,32 @@ FW_VERSIONS = {
     ],
   },
   CAR.FIT: {
+    (Ecu.programmedFuelInjection, 0x18da10f1, None): [
+      b'37805-5R7-U320\x00\x00',
+    ],
     (Ecu.vsa, 0x18da28f1, None): [
       b'57114-T5R-L220\x00\x00',
+      b'57114-T5R-L320\x00\x00',
     ],
     (Ecu.eps, 0x18da30f1, None): [
       b'39990-T5R-C020\x00\x00',
       b'39990-T5R-C030\x00\x00',
     ],
+    (Ecu.fwdRadar, 0x18dab0f1, None): [
+      b'36161-T5R-A240\x00\x00',
+      b'36161-T5R-A340\x00\x00',
+      b'36161-T5R-A520\x00\x00',
+    ],
     (Ecu.gateway, 0x18daeff1, None): [
       b'38897-T5A-J010\x00\x00',
     ],
-    (Ecu.combinationMeter, 0x18da60f1, None): [
-      b'78109-T5A-A420\x00\x00',
-      b'78109-T5A-A910\x00\x00',
-    ],
-    (Ecu.fwdRadar, 0x18dab0f1, None): [
-      b'36161-T5R-A240\x00\x00',
-      b'36161-T5R-A520\x00\x00',
-    ],
     (Ecu.srs, 0x18da53f1, None): [
       b'77959-T5R-A230\x00\x00',
+    ],
+    (Ecu.combinationMeter, 0x18da60f1, None): [
+      b'78109-T5A-A420\x00\x00',
+      b'78109-T5A-A510\x00\x00',
+      b'78109-T5A-A910\x00\x00',
     ],
   },
   CAR.ODYSSEY: {
