@@ -110,6 +110,9 @@ typedef struct UIScene {
 
   bool is_rhd;
   bool frontview;
+  bool sidebar_collapsed;
+  // responsive layout
+  Rect viz_rect;
 
   std::string alert_text1;
   std::string alert_text2;
@@ -117,15 +120,15 @@ typedef struct UIScene {
   float alert_blinking_rate;
   cereal::ControlsState::AlertSize alert_size;
 
-  cereal::HealthData::PandaType pandaType;
+  cereal::HealthData::HwType hwType;
+  int satelliteCount;
   NetStatus athenaStatus;
 
   cereal::ThermalData::Reader thermal;
   cereal::RadarState::LeadData::Reader lead_data[2];
-  cereal::CarState::Reader car_state;
   cereal::ControlsState::Reader controls_state;
   cereal::DriverState::Reader driver_state;
-  cereal::DriverMonitoringState::Reader dmonitoring_state;
+  cereal::DMonitoringState::Reader dmonitoring_state;
 
   // modelV2
   float lane_line_probs[4];
@@ -133,9 +136,6 @@ typedef struct UIScene {
   track_vertices_data track_vertices;
   line_vertices_data lane_line_vertices[4];
   line_vertices_data road_edge_vertices[2];
-
-  // lead
-  vertex_data lead_vertices[2];
 } UIScene;
 
 typedef struct UIState {
@@ -145,14 +145,24 @@ typedef struct UIState {
   VisionBuf * last_frame;
 
   // framebuffer
-  std::unique_ptr<FrameBuffer> fb;
+  FramebufferState *fb;
   int fb_w, fb_h;
 
   // NVG
   NVGcontext *vg;
 
-  // images
-  std::map<std::string, int> images;
+  // fonts and images
+  int font_sans_regular;
+  int font_sans_semibold;
+  int font_sans_bold;
+  int img_wheel;
+  int img_turn;
+  int img_face;
+  int img_button_settings;
+  int img_button_home;
+  int img_battery;
+  int img_battery_charging;
+  int img_network[6];
 
   SubMaster *sm;
 
@@ -178,9 +188,7 @@ typedef struct UIState {
   bool longitudinal_control;
   uint64_t started_frame;
 
-  bool sidebar_collapsed;
-  Rect video_rect, viz_rect;
-  float car_space_transform[6];
+  Rect video_rect;
 } UIState;
 
 void ui_init(UIState *s);
