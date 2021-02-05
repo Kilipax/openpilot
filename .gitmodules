@@ -9,13 +9,7 @@
 	path = opendbc
 	url = ../../Kilipax/opendbc.git
 	branch = fit-manual
-[submodule "laika_repo"]
-	path = laika_repo
-	url = ../../commaai/laika.git
 [submodule "cereal"]
 	path = cereal
 	url = ../../Kilipax/cereal.git
 	branch = fit-manual
-[submodule "rednose_repo"]
-	path = rednose_repo
-	url = ../../commaai/rednose.git
