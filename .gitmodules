@@ -5,6 +5,9 @@
 	path = openpilot
 	url = ../../Kilipax/openpilot.git
 	branch = fit-manual
+[submodule "opendbc"]
+	path = opendbc
+	url = ../../Kilipax/opendbc.git
 [submodule "laika_repo"]
 	path = laika_repo
 	url = ../../commaai/laika.git
@@ -12,7 +15,6 @@
 	path = cereal
 	url = ../../csouers/cereal.git
 	branch = accord
-
 [submodule "rednose_repo"]
 	path = rednose_repo
 	url = ../../commaai/rednose.git
