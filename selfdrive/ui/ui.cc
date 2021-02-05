@@ -255,8 +255,8 @@ void ui_update(UIState *s) {
   }
 
   // Handle controls timeout
-  if (s->started && !s->scene.frontview && ((s->sm)->frame - s->started_frame) > 10*UI_FREQ) {
-    if ((s->sm)->rcv_frame("controlsState") < s->started_frame) {
+//  if (s->started && !s->scene.frontview && ((s->sm)->frame - s->started_frame) > 10*UI_FREQ) {
+  //  if ((s->sm)->rcv_frame("controlsState") < s->started_frame) {
       // car is started, but controlsState hasn't been seen at all
       s->scene.alert_text1 = "openpilot Unavailable";
       s->scene.alert_text2 = "Waiting for controls to start";
