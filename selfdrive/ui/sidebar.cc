@@ -118,7 +118,7 @@ static void draw_panda_metric(UIState *s) {
 
   int panda_severity = 0;
   std::string panda_message = "VEHICLE\nONLINE";
-  if (s->scene.hwType == cereal::HealthData::HwType::UNKNOWN) {
+  if (s->scene.pandaType == cereal::HealthData::PandaType::UNKNOWN) {
     panda_severity = 2;
     panda_message = "NO\nPANDA";
   }
@@ -136,7 +136,7 @@ static void draw_connectivity(UIState *s) {
 }
 
 void ui_draw_sidebar(UIState *s) {
-  if (s->scene.sidebar_collapsed) {
+  if (s->sidebar_collapsed) {
     return;
   }
   draw_background(s);

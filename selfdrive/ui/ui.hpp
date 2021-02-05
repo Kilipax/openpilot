@@ -110,9 +110,6 @@ typedef struct UIScene {
 
   bool is_rhd;
   bool frontview;
-  bool sidebar_collapsed;
-  // responsive layout
-  Rect viz_rect;
 
   std::string alert_text1;
   std::string alert_text2;
@@ -120,14 +117,15 @@ typedef struct UIScene {
   float alert_blinking_rate;
   cereal::ControlsState::AlertSize alert_size;
 
-  cereal::HealthData::HwType hwType;
+  cereal::HealthData::PandaType pandaType;
   NetStatus athenaStatus;
 
   cereal::ThermalData::Reader thermal;
   cereal::RadarState::LeadData::Reader lead_data[2];
+  cereal::CarState::Reader car_state;
   cereal::ControlsState::Reader controls_state;
   cereal::DriverState::Reader driver_state;
-  cereal::DMonitoringState::Reader dmonitoring_state;
+  cereal::DriverMonitoringState::Reader dmonitoring_state;
 
   // modelV2
   float lane_line_probs[4];
@@ -135,6 +133,9 @@ typedef struct UIScene {
   track_vertices_data track_vertices;
   line_vertices_data lane_line_vertices[4];
   line_vertices_data road_edge_vertices[2];
+
+  // lead
+  vertex_data lead_vertices[2];
 } UIScene;
 
 typedef struct UIState {
@@ -144,7 +145,7 @@ typedef struct UIState {
   VisionBuf * last_frame;
 
   // framebuffer
-  FramebufferState *fb;
+  std::unique_ptr<FrameBuffer> fb;
   int fb_w, fb_h;
 
   // NVG
@@ -177,7 +178,8 @@ typedef struct UIState {
   bool longitudinal_control;
   uint64_t started_frame;
 
-  Rect video_rect;
+  bool sidebar_collapsed;
+  Rect video_rect, viz_rect;
   float car_space_transform[6];
 } UIState;
 
