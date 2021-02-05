@@ -14,8 +14,8 @@
 	url = ../../commaai/laika.git
 [submodule "cereal"]
 	path = cereal
-	url = ../../csouers/cereal.git
-	branch = accord
+	url = ../../Kilipax/cereal.git
+	branch = fit-manual
 [submodule "rednose_repo"]
 	path = rednose_repo
 	url = ../../commaai/rednose.git
