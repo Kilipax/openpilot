@@ -1,3 +1,35 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+
+@Kilipax
+csouers
+/
+openpilot
+forked from energee/openpilot
+3
+54.7k
+Code
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+openpilot/selfdrive/ui/ui.cc
+@adeebshihadeh
+adeebshihadeh fix camera malfunction alert (commaai#19757)
+…
+Latest commit 40830a2 24 days ago
+ History
+ 11 contributors
+@deanlee@adeebshihadeh@pd0wm@geohot@ZwX1616@valish@arne182@robbederks@HaraldSchafer@grekiki@jyoung8607
+277 lines (243 sloc)  10.1 KB
+
 #include <stdio.h>
 #include <cmath>
 #include <stdlib.h>
@@ -255,8 +287,8 @@ void ui_update(UIState *s) {
   }
 
   // Handle controls timeout
-//  if (s->started && !s->scene.frontview && ((s->sm)->frame - s->started_frame) > 10*UI_FREQ) {
-  //  if ((s->sm)->rcv_frame("controlsState") < s->started_frame) {
+  if (s->started && !s->scene.frontview && ((s->sm)->frame - s->started_frame) > 10*UI_FREQ) {
+    if ((s->sm)->rcv_frame("controlsState") < s->started_frame) {
       // car is started, but controlsState hasn't been seen at all
       s->scene.alert_text1 = "openpilot Unavailable";
       s->scene.alert_text2 = "Waiting for controls to start";
@@ -275,3 +307,15 @@ void ui_update(UIState *s) {
     }
   }
 }
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
