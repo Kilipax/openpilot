@@ -15,7 +15,7 @@
 [submodule "cereal"]
 	path = cereal
 	url = ../../Kilipax/cereal.git
-	branch = fit-manual
+	branch = master
 [submodule "rednose_repo"]
 	path = rednose_repo
 	url = ../../commaai/rednose.git
